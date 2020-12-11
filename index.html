@@ -2,7 +2,48 @@
 <html>
 <head>
 <title>Tirage au sort</title>
+<style>
+div.naviguableStates {
+height: 50%;
+width: 50%;
+margin-left : 35%; 
+margin-top : 20%;
+}
+
+div.stateTitle {
+margin-left : 30%; 
+margin-top : 2%;
+}
+
+div.stateContent {
+margin-left : 25%; 
+margin-top : 5%;
+}
+
+div.contentList {
+margin-left : 18%; 
+margin-top : 15%;
+}
+
+div#notifications {
+margin-left : 10%; 
+margin-top : 10%;
+}
+</style>
 </head>
 <body>
+<div id="notifications"></div>
+<div id="elementsAddingDiv" class="naviguableStates">
+<div class="stateTitle">Ajout de nouveaux éléments :</div>
+<div class="stateContent">
+	<input type="text"></input>
+	<button>Ajouter</button>
+</div>
+<div class="contentList">
+</div>
+</div>
+<!-- <div id="settingUpDiv"></div> -->
+<!-- <div id="reviewingElementsDiv"></div> -->
+<!-- <div id="resultsDiv"></div> -->
 </body>
 </html>
