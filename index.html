@@ -20,7 +20,7 @@ margin-left : 25%;
 margin-top : 5%;
 }
 
-div.contentList {
+div.list {
 margin-left : 18%; 
 margin-top : 10%;
 }
@@ -29,6 +29,13 @@ div#notifications {
 margin-left : 10%; 
 margin-top : 10%;
 }
+
+/*
+div#resultsDiv {
+margin-left : 10%; 
+margin-top : 10%;
+}
+*/
 </style>
 </head>
 <body>
@@ -40,20 +47,25 @@ margin-top : 10%;
 			<button onclick="addElement()">Ajouter</button>
 			<button onclick="clearList()">Vider Liste</button>
 		</div>
-		<div class="contentList">
+		<div class="contentList list">
 		</div>
 	</div>
 	<div id="settingUpDiv" class="naviguableStates">
-		<div class="stateTitle">Précision éléments de configuraiton du tirage :</div>
+		<div class="stateTitle">Précision éléments de configuration du tirage :</div>
 		<div class="stateContent">Combien d'éléments doivent être tirés au sort ? 
 			<div>	
 				<input type="number"id="numberOfElements"></input><button onclick="drawAndRender()">Procéder au tirage au sort</button>
 			</div>
 		</div>
-		<div class="contentList">
+		<div class="contentList list">
 		</div>
 	</div>
-	<!-- <div id="resultsDiv"></div> -->
+	<div id="resultsDiv" class="naviguableStates">
+		<div class="stateTitle">Résultat du tirage :</div>
+		<div id="resultsContentDiv" class="list">
+			
+		</div>
+	</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -64,6 +76,7 @@ var drawnNumbers = [];
 var typingField = window.document.getElementById("typingField");
 var pickedElementsNumber = window.document.getElementById("numberOfElements");
 var listDisplayingAreas = window.document.getElementsByClassName("contentList");
+var resultDisplayingArea = window.document.getElementById("resultsContentDiv");
 
 function addElement() {
 	if(_.isString(typingField.value) && !_.isEmpty(typingField.value.trim())) {
@@ -88,7 +101,7 @@ function renderListContent(){
 }
 
 function drawAndRender(){
-	if(_.isNumber(pickedElementsNumber.value) && pickedElementsNumber.value < listToWorkOn.length) {
+	if(isNumber(pickedElementsNumber.value) && pickedElementsNumber.value < listToWorkOn.length) {
 		draw();
 		renderResult();
 	}
@@ -96,23 +109,30 @@ function drawAndRender(){
 
 function draw() {
 	var numberOfDraws = pickedElementsNumber.value;
-		drawnNumbers.length = 0;
-		for(var i = 0;i<numberOfDraws;) {
-			var tmpDrawn = Math.floor(Math.random() * listToWorkOn.length);
-			if (!drawnNumbers.includes(tmpDrawn)){
-				drawnNumbers.push(tmpDrawn);
-				++i;
-			}
+	drawnNumbers.length = 0;
+	for(var i = 0;i<numberOfDraws;) {
+		var tmpDrawn = Math.floor(Math.random() * listToWorkOn.length);
+		if (!drawnNumbers.includes(tmpDrawn)){
+			drawnNumbers.push(tmpDrawn);
+			++i;
 		}
+	}
 }
 
 function renderResult(){
-	/*
 	var result = '';
-	for(loopElmt in drawnNumbers){
-		result = result + '<div>' + listToWorkOn[loopElmtId] +  '</div>';
+	for(loopElmtId in drawnNumbers){
+		result = result + '<div>' + listToWorkOn[drawnNumbers[loopElmtId]] +  '</div>';
 	}
-	*/
+	resultDisplayingArea.innerHTML = result;
+}
+
+function isNumber(paramVar) {
+	var result = false;
+	if(!_.isEmpty(paramVar)){
+		result = paramVar.match(/[1-9]+0*/g).length > 0;
+	}
+	return result;
 }
 
 /*
