@@ -20,7 +20,7 @@ margin-left : 25%;
 margin-top : 5%;
 }
 
-div#contentList {
+div.contentList {
 margin-left : 18%; 
 margin-top : 10%;
 }
@@ -40,11 +40,19 @@ margin-top : 10%;
 			<button onclick="addElement()">Ajouter</button>
 			<button onclick="clearList()">Vider Liste</button>
 		</div>
-		<div id="contentList">
+		<div class="contentList">
 		</div>
 	</div>
-	<!-- <div id="settingUpDiv"></div> -->
-	<!-- <div id="reviewingElementsDiv"></div> -->
+	<div id="settingUpDiv" class="naviguableStates">
+		<div class="stateTitle">Précision éléments de configuraiton du tirage :</div>
+		<div class="stateContent">Combien d'éléments doivent être tirés au sort ? 
+			<div>	
+				<input type="number"></input><button>Procéder au tirage au sort</button>
+			</div>
+		</div>
+		<div class="contentList">
+		</div>
+	</div>
 	<!-- <div id="resultsDiv"></div> -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
@@ -53,7 +61,7 @@ margin-top : 10%;
 //var captain = 0;
 var listToWorkOn = [];
 var typingField = window.document.getElementById("typingField");
-var listDisplayingArea = window.document.getElementById("contentList");
+var listDisplayingAreas = window.document.getElementsByClassName("contentList");
 
 function addElement() {
 	if(_.isString(typingField.value) && !_.isEmpty(typingField.value.trim())) {
@@ -72,7 +80,9 @@ function renderListContent(){
 	for(loopElmtId in listToWorkOn) {
 		result = result + '<div>' + listToWorkOn[loopElmtId] +  '</div>';
 	}
-	listDisplayingArea.innerHTML = result;
+	for(loopElmtId1 in listDisplayingAreas) {
+		listDisplayingAreas[loopElmtId1].innerHTML = result;
+	}
 }
 
 /*
