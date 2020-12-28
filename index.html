@@ -58,7 +58,7 @@ margin-top : 10%;
 		<div class="stateTitle">Pr&eacute;cision &eacute;l&eacute;ments de configuration du tirage :</div>
 		<div class="stateContent">Combien d'&eacute;l&eacute;ments doivent être tir&eacute;s au sort ? 
 			<div>	
-				<input type="number"id="numberOfElements"></input><button onclick="drawAndRender()">Proc&eacute;der au tirage au sort</button>
+				<input type="number" id="numberOfElements" onchange="correctInput()"></input><button onclick="drawAndRender()">Proc&eacute;der au tirage au sort</button>
 			</div>
 		</div>
 		<div class="contentList list">
@@ -222,6 +222,13 @@ function goToPreviousState(){
 		--captain;
 	}
 	displayCorrectPart();
+}
+
+function correctInput(){
+	if (!isNumber(pickedElementsNumber.value) || pickedElementsNumber.value < 0) {
+		console.log('New value of setting is not a number');
+		pickedElementsNumber.value = 0;
+	} 
 }
 </script>
 </html>
