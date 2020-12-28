@@ -92,7 +92,15 @@ displayCorrectPart();
 
 function addElement() {
 	if(_.isString(typingField.value) && !_.isEmpty(typingField.value.trim())) {
-		listToWorkOn.push(typingField.value.trim());
+		var arrayToWorkOn = [];
+		if(typingField.value.includes(';')){
+			arrayToWorkOn = typingField.value.split(';');
+		} else {
+			arrayToWorkOn.push(typingField.value);
+		}
+		for(var i=0; i<arrayToWorkOn.length; ++i){
+			listToWorkOn.push(arrayToWorkOn[i].trim());
+		}
 		renderListContent();
 	}
 }
