@@ -47,7 +47,7 @@ margin-top : 10%;
 	<div id="elementsAddingDiv" class="naviguableStates">
 		<div class="stateTitle">Ajout de nouveaux &eacute;l&eacute;ments :</div>
 		<div class="stateContent">
-			<input type="text" id="typingField"></input>
+			<input type="text" id="typingField" onkeypress="addElementFromKeyPress(event)"></input>
 			<button onclick="addElement()">Ajouter</button>
 			<button onclick="clearList()">Vider Liste</button>
 		</div>
@@ -102,6 +102,12 @@ function addElement() {
 			listToWorkOn.push(arrayToWorkOn[i].trim());
 		}
 		renderListContent();
+	}
+}
+
+function addElementFromKeyPress(event) {
+	if (event && event.keyCode === 13) {
+		addElement();
 	}
 }
 
