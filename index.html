@@ -99,11 +99,13 @@ function addElement() {
 		var arrayToWorkOn = [];
 		if(typingField.value.includes(';')){
 			arrayToWorkOn = typingField.value.split(';');
-		} else {
+		} else if (!_.isEmpty(typingField.value)) {
 			arrayToWorkOn.push(typingField.value);
 		}
 		for(var i=0; i<arrayToWorkOn.length; ++i){
-			listToWorkOn.push(arrayToWorkOn[i].trim());
+			if (!_.isEmpty(arrayToWorkOn[i].trim())) { 
+				listToWorkOn.push(arrayToWorkOn[i].trim());
+			}
 		}
 		renderListContent();
 	}
