@@ -225,8 +225,7 @@ function goToPreviousState(){
 }
 
 function correctInput(){
-	if (!isNumber(pickedElementsNumber.value) || pickedElementsNumber.value < 0) {
-		console.log('New value of setting is not a number');
+	if (!isNumber(pickedElementsNumber.value) || pickedElementsNumber.value < 0 || pickedElementsNumber.value > listToWorkOn.length ) {
 		pickedElementsNumber.value = 0;
 	} 
 }
