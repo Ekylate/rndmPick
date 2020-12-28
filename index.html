@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>Tirage au sort</title>
+<style>
+div.naviguableStates {
+height: 50%;
+width: 50%;
+margin-left : 35%; 
+margin-top : 20%;
+}
+
+div.stateTitle {
+margin-left : 30%; 
+margin-top : 2%;
+}
+
+div.stateContent {
+margin-left : 25%; 
+margin-top : 5%;
+}
+
+div.list {
+margin-left : 18%; 
+margin-top : 10%;
+}
+
+div#notifications {
+margin-left : 10%; 
+margin-top : 10%;
+}
+
+/*
+div#resultsDiv {
+margin-left : 10%; 
+margin-top : 10%;
+}
+*/
+</style>
+</head>
+<body>
+	<div id="notifications"></div>
+	<div id="navigationBox">
+		<button onclick="goToPreviousState()">pr&eacute;c&eacute;dent</button>
+		<button onclick="goToNextState()">suivant</button>
+	</div>
+	<div id="elementsAddingDiv" class="naviguableStates">
+		<div class="stateTitle">Ajout de nouveaux &eacute;l&eacute;ments :</div>
+		<div class="stateContent">
+			<input type="text" id="typingField"></input>
+			<button onclick="addElement()">Ajouter</button>
+			<button onclick="clearList()">Vider Liste</button>
+		</div>
+		<div class="contentList list">
+		</div>
+	</div>
+	<div id="settingUpDiv" class="naviguableStates">
+		<div class="stateTitle">Pr&eacute;cision &eacute;l&eacute;ments de configuration du tirage :</div>
+		<div class="stateContent">Combien d'&eacute;l&eacute;ments doivent être tir&eacute;s au sort ? 
+			<div>	
+				<input type="number" id="numberOfElements" onchange="correctInput()"></input><button onclick="drawAndRender()">Proc&eacute;der au tirage au sort</button>
+			</div>
+		</div>
+		<div class="contentList list">
+		</div>
+	</div>
+	<div id="resultsDiv" class="naviguableStates">
+		<div class="stateTitle">R&eacute;sultat du tirage :</div>
+		<div id="resultsContentDiv" class="list">
+			
+		</div>
+	</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" language="javascript">
+var captain = 0;
+var listToWorkOn = [];
+var drawnNumbers = [];
+var typingField = window.document.getElementById("typingField");
+var pickedElementsNumber = window.document.getElementById("numberOfElements");
+var listDisplayingAreas = window.document.getElementsByClassName("contentList");
+var resultDisplayingArea = window.document.getElementById("resultsContentDiv");
+var divs = 
+{
+	adding : window.document.getElementById('elementsAddingDiv'),
+	setting : window.document.getElementById('settingUpDiv'),
+	result : window.document.getElementById('resultsDiv')
+};
+
+displayCorrectPart();
+
+function addElement() {
+	if(_.isString(typingField.value) && !_.isEmpty(typingField.value.trim())) {
+		listToWorkOn.push(typingField.value.trim());
+		renderListContent();
+	}
+}
+
+function clearList() {
+	listToWorkOn.length = 0;
+	renderListContent();
+}
+
+function renderListContent(){
+	var result = '';
+	for(loopElmtId in listToWorkOn) {
+		result = result + '<div>' + listToWorkOn[loopElmtId] +  '</div>';
+	}
+	for(loopElmtId1 in listDisplayingAreas) {
+		listDisplayingAreas[loopElmtId1].innerHTML = result;
+	}
+}
+
+function drawAndRender(){
+	if(isNumber(pickedElementsNumber.value) && pickedElementsNumber.value < listToWorkOn.length) {
+		draw();
+		renderResult();
+	}
+}
+
+function draw() {
+	var numberOfDraws = pickedElementsNumber.value;
+	drawnNumbers.length = 0;
+	for(var i = 0;i<numberOfDraws;) {
+		var tmpDrawn = Math.floor(Math.random() * listToWorkOn.length);
+		if (!drawnNumbers.includes(tmpDrawn)){
+			drawnNumbers.push(tmpDrawn);
+			++i;
+		}
+	}
+}
+
+function renderResult(){
+	var result = '';
+	for(loopElmtId in drawnNumbers){
+		result = result + '<div>' + listToWorkOn[drawnNumbers[loopElmtId]] +  '</div>';
+	}
+	resultDisplayingArea.innerHTML = result;
+}
+
+function isNumber(paramVar) {
+	var result = false;
+	if(!_.isEmpty(paramVar)){
+		result = paramVar.match(/[1-9]+0*/g).length > 0;
+	}
+	return result;
+}
+
+
+function isAddingElementsState(){
+	return captain === 0;
+}
+
+function isSettingUpState(){
+	return captain === 1;
+}
+
+function isResultState(){
+	return captain === 2;
+}
+
+function goToAddingElementsState(){
+	captain = 0;
+	displayCorrectPart();
+}
+
+function goToSettingUpState(){
+	captain = 1;
+	displayCorrectPart();
+}
+
+function goToReviewingState(){
+	captain = 2;
+	displayCorrectPart();
+}
+
+function displayDiv(divParam){
+	if (divParam != null && divParam != undefined) {
+		divParam.style.display = 'block';
+	}
+}
+
+function hideOthers(divListParam){
+	if (!_.isEmpty(divListParam)) {
+		for ( elmt in divListParam) {
+			hideDiv(divListParam[elmt]);
+		}
+	}
+}
+
+function hideDiv(divParam){
+	if (divParam != null && divParam != undefined) {
+		divParam.style.display = 'none';
+	}
+}
+
+function displayCorrectPart(){
+	if (isAddingElementsState()) {
+		displayDiv(divs.adding);
+		hideOthers([divs.setting, divs.result]);
+	}
+	if (isSettingUpState()) {
+		displayDiv(divs.setting);
+		hideOthers([divs.adding, divs.result]);
+	}
+	if (isResultState()) {
+		displayDiv(divs.result);
+		hideOthers([divs.adding, divs.setting]);
+	}
+}
+
+function goToNextState(){
+	if (captain < 2) {
+		++captain;
+	}
+	displayCorrectPart();
+}
+
+function goToPreviousState(){
+	if(captain > 0){
+		--captain;
+	}
+	displayCorrectPart();
+}
+
+function correctInput(){
+	if (!isNumber(pickedElementsNumber.value) || pickedElementsNumber.value < 0 || pickedElementsNumber.value > listToWorkOn.length ) {
+		pickedElementsNumber.value = 0;
+	} 
+}
+</script>
+</html>
