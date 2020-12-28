@@ -30,6 +30,10 @@ margin-left : 10%;
 margin-top : 10%;
 }
 
+button.deleteButton {
+margin-left : 80%;
+}
+
 /*
 div#resultsDiv {
 margin-left : 10%; 
@@ -119,7 +123,7 @@ function clearList() {
 function renderListContent(){
 	var result = '';
 	for(loopElmtId in listToWorkOn) {
-		result = result + '<div>' + listToWorkOn[loopElmtId] +  '</div>';
+		result = result + '<div>' + listToWorkOn[loopElmtId] +  '<button class="deleteButton" onclick="deleteItem('+ loopElmtId +')">X</button></div>';
 	}
 	for(loopElmtId1 in listDisplayingAreas) {
 		listDisplayingAreas[loopElmtId1].innerHTML = result;
@@ -242,6 +246,15 @@ function correctInput(){
 	if (!isNumber(pickedElementsNumber.value) || pickedElementsNumber.value < 0 || pickedElementsNumber.value > listToWorkOn.length ) {
 		pickedElementsNumber.value = 0;
 	} 
+}
+
+function deleteItem(idParam){
+	if (idParam && _.isNumber(idParam)){
+		if (idParam >= 0 && idParam <= listToWorkOn.length) {
+			listToWorkOn = listToWorkOn.filter((elmt, index) => index !== idParam);
+			renderListContent();
+		}
+	}
 }
 </script>
 </html>
