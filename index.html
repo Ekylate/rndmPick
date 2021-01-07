@@ -95,7 +95,8 @@ var typingField = window.document.getElementById("typingField");
 var pickedElementsNumber = window.document.getElementById("numberOfElements");
 var listDisplayingAreas = window.document.getElementsByClassName("contentList");
 var resultDisplayingArea = window.document.getElementById("resultsContentDiv");
-var divs = 
+var notificationsDisplayingArea = window.document.getElementById("notifications");
+var mainDivs = 
 {
 	adding : window.document.getElementById('elementsAddingDiv'),
 	setting : window.document.getElementById('settingUpDiv'),
@@ -227,16 +228,16 @@ function hideDiv(divParam){
 
 function displayCorrectPart(){
 	if (isAddingElementsState()) {
-		displayDiv(divs.adding);
-		hideOthers([divs.setting, divs.result]);
+		displayDiv(mainDivs.adding);
+		hideOthers([mainDivs.setting, mainDivs.result]);
 	}
 	if (isSettingUpState()) {
-		displayDiv(divs.setting);
-		hideOthers([divs.adding, divs.result]);
+		displayDiv(mainDivs.setting);
+		hideOthers([mainDivs.adding, mainDivs.result]);
 	}
 	if (isResultState()) {
-		displayDiv(divs.result);
-		hideOthers([divs.adding, divs.setting]);
+		displayDiv(mainDivs.result);
+		hideOthers([mainDivs.adding, mainDivs.setting]);
 	}
 }
 
@@ -268,5 +269,24 @@ function deleteItem(idParam){
 		}
 	}
 }
+
+function clearNotifications() {
+	notificationsDisplayingArea.innerHTML = '';
+}
+
+function addOneMessage(messageContent, messageType) {
+	var result = '<div class="' + messageType + '">' + messageContent + '</div>';
+	notificationsDisplayingArea.innerHTML = notificationsDisplayingArea.innerHTML + result;
+}
+
+function addSuccessMessage(msgContent) {
+}
+
+function addWarningMessage(msgContent) {
+}
+
+function addErrorMessage(msgContent) {
+}
+	
 </script>
 </html>
