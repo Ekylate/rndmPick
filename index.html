@@ -54,6 +54,16 @@ margin-top : 10%;
 			<input type="text" id="typingField" onkeypress="addElementFromKeyPress(event)"></input>
 			<button onclick="addElement()">Ajouter</button>
 			<button onclick="clearList()">Vider Liste</button>
+			<div>
+				<label for="separators">Choisissez une s&eacute;parateur pour les &eacute;l&eacute;ments :</label>
+				<select name="separators" id="separatorsChoice">
+					<option value="comma">,</option>
+					<option value="semicolon">;</option>
+					<option value="period">.</option>
+					<option value="slash">/</option>
+				</select>
+
+			</div>
 		</div>
 		<div class="contentList list">
 		</div>
